@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Jenderal92 • GitHub Archive — Devil's Fork</title>
+    <title>Jenderal92 • GitHub Archive</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Luckiest+Guy&family=VT323&display=swap" rel="stylesheet">
     <style>
@@ -365,16 +365,16 @@
             display: inline-block;
         }
         .repo-meta span:hover .devil-fork {
-        	animation: devilSpin 0.4s ease-in-out;
+            animation: devilSpin 0.4s ease-in-out;
         }
         @keyframes devilSpin {
-        	0% { transform: rotate(0deg); filter: hue-rotate(0deg); }
-        	100% { transform: rotate(360deg); filter: hue-rotate(20deg); }
+            0% { transform: rotate(0deg); filter: hue-rotate(0deg); }
+            100% { transform: rotate(360deg); filter: hue-rotate(20deg); }
         }
         
         .repo-meta .fa-database,
         .footer-stats .fa-database {
-        	color: #58a6ff;  /
+            color: #58a6ff;
             filter: drop-shadow(0 0 1px rgba(88,166,255,0.4));
         }
 
@@ -396,6 +396,13 @@
             gap: 0.3rem;
         }
 
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-block;
+            align-items: center;
+        }
+
         .skeleton-card {
             background: var(--skeleton-bg);
             border-radius: 12px;
@@ -404,15 +411,9 @@
         }
 
         @keyframes pulse {
-            0% {
-                opacity: 0.6;
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0.6;
-            }
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
         }
 
         .skeleton-title {
@@ -519,13 +520,6 @@
         
         .repo-meta span i {
             margin-right: 3px;
-        }
-        
-        .size-badge {
-            background: rgba(128,128,128,0.15);
-            padding: 0.1rem 0.4rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
         }
     </style>
 </head>
@@ -683,13 +677,18 @@
     function computeTotalStats(repos) {
         let stars = 0, forks = 0, totalSizeKB = 0;
         for (const repo of repos) {
-            stars += repo.stargazers_count;
-            forks += repo.forks_count;
-            totalSizeKB += repo.size || 0;
+            stars += Number(repo.stargazers_count) || 0;
+            forks += Number(repo.forks_count) || 0;
+            
+            const repoSize = Number(repo.size);
+            if (!isNaN(repoSize) && repoSize > 0) {
+                totalSizeKB += repoSize;
+            }
         }
         totalStarsAll = stars;
         totalForksAll = forks;
-        totalSizeMB = (totalSizeKB / 1024).toFixed(2);
+        totalSizeMB = formatSizeMB(totalSizeKB);
+        
         totalStarsSpan.innerText = totalStarsAll;
         totalForksSpan.innerText = totalForksAll;
         totalSizeSpan.innerText = totalSizeMB;
@@ -742,8 +741,13 @@
     }
 
     function formatSizeMB(sizeKB) {
-        if (!sizeKB && sizeKB !== 0) return "0";
+        if (!sizeKB || isNaN(sizeKB) || sizeKB < 0) {
+            return "0.00";
+        }
         const mb = sizeKB / 1024;
+        if (mb > 0 && mb < 0.01) {
+            return "0.01";
+        }
         return mb.toFixed(2);
     }
 
@@ -794,6 +798,20 @@
         let html = "";
         for (const repo of pageRepos) {
             const sizeMB = formatSizeMB(repo.size);
+
+            const updatedAt = new Date(repo.updated_at);
+            const sekarang = new Date();
+            const selisihHari = Math.floor((sekarang - updatedAt) / (1000 * 60 * 60 * 24));
+            
+            let statusWaktu = "";
+            if (selisihHari <= 14) {
+                statusWaktu = '<span class="status-badge" style="color: #56d364;"><i class="fas fa-fire"></i>Active</span>';
+            } else if (selisihHari > 365) {
+                statusWaktu = '<span class="status-badge" style="color: #f85149; solid rgba(248,81,73,0.4);"><i class="fas fa-bed"></i> Long</span>';
+            } else {
+                statusWaktu = '<span class="status-badge" style="color: #8b949e; solid rgba(139,148,158,0.3);"><i class="fas fa-folder"></i> Stable</span>';
+            }
+
             html += `
                 <div class="repo-card">
                     <div class="repo-name">
@@ -806,6 +824,7 @@
                         <span><i class="fas fa-star"></i> ${repo.stargazers_count}</span>
                         <span><span class="devil-fork">🔱</span> ${repo.forks_count}</span>
                         <span><i class="fas fa-database"></i> ${sizeMB} MB</span>
+                        ${statusWaktu}
                         ${repo.archived ? '<span class="archived-badge"><i class="fas fa-archive"></i> Archived</span>' : ''}
                     </div>
                 </div>
