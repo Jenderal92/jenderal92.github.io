@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Jenderal92 • GitHub Archive</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Luckiest+Guy&family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Luckiest+Guy&family=VT323&family=Fira+Code&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -32,6 +32,8 @@
             --badge-archived: #d29922;
             --gold-star: #e3b341;
             --devil-trident: #e06c75;
+            --topic-bg: #1f6feb;
+            --topic-hover: #388bfd;
         }
 
         body.light {
@@ -53,6 +55,8 @@
             --badge-archived: #b8860b;
             --gold-star: #d4af37;
             --devil-trident: #b93b4d;
+            --topic-bg: #0969da;
+            --topic-hover: #0550ae;
         }
 
         html {
@@ -105,22 +109,10 @@
         }
 
         @keyframes glitch {
-            0% {
-                text-shadow: -2px 0 red, 2px 0 cyan;
-                transform: skew(0deg);
-            }
-            25% {
-                text-shadow: 2px 0 red, -2px 0 cyan;
-                transform: skew(0.5deg);
-            }
-            50% {
-                text-shadow: -2px 0 red, 2px 0 cyan;
-                transform: skew(-0.5deg);
-            }
-            100% {
-                text-shadow: 2px 0 red, -2px 0 cyan;
-                transform: skew(0deg);
-            }
+            0% { text-shadow: -2px 0 red, 2px 0 cyan; transform: skew(0deg);}
+            25% { text-shadow: 2px 0 red, -2px 0 cyan; transform: skew(0.5deg);}
+            50% { text-shadow: -2px 0 red, 2px 0 cyan; transform: skew(-0.5deg);}
+            100% { text-shadow: 2px 0 red, -2px 0 cyan; transform: skew(0deg);}
         }
 
         .profile-section {
@@ -135,391 +127,96 @@
             gap: 1rem;
             justify-content: space-between;
         }
+        .profile-left { display: flex; align-items: center; gap: 1.2rem; }
+        .profile-avatar { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; }
+        .contact-icon { background: var(--btn-bg); border: 1px solid var(--border); border-radius: 30px; padding: 0.4rem 0.9rem; text-decoration: none; color: var(--text-primary); display: inline-flex; align-items: center; gap: 0.4rem; transition: 0.2s; }
+        .contact-icon:hover { background: var(--accent); color: #fff; }
+        .search-bar { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1rem; align-items: center; justify-content: space-between; }
+        .search-box { flex: 2; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 1rem; color: var(--text-primary); }
+        .filter-sort select { background: var(--btn-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.8rem; cursor: pointer; font-family: inherit; }
+        .action-btn { background: var(--btn-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.9rem; cursor: pointer; transition: 0.2s; font-family: inherit; }
+        .info { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
 
-        .profile-left {
+        .repo-topics {
             display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin: 0.6rem 0 0.4rem 0;
+        }
+        .topic-tag {
+            background: var(--topic-bg);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-family: 'VT323', monospace;
+            letter-spacing: 0.5px;
+            transition: 0.1s;
+            display: inline-flex;
             align-items: center;
-            gap: 1.2rem;
+            gap: 4px;
+            font-weight: bold;
+        }
+        .topic-tag:hover {
+            background: var(--topic-hover);
+            transform: scale(0.98);
+        }
+        .topic-loading {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            font-style: italic;
         }
 
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 2px solid var(--accent);
-            object-fit: cover;
+        .terminal-profile {
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.75rem;
+            background: var(--bg-card);
+            padding: 0.6rem 0.9rem;
+            margin-top: 6px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+        .terminal-line {
+            white-space: normal;
+            overflow-x: auto;
+        }
+        .prompt-user {
+            color: #0f0;
+        }
+        .bio-text, .location-text  {
+            color: #ffd700;
+            color: var(--text-secondary);
         }
 
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-        }
+
+        .repo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .repo-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; transition: 0.2s; animation: fadeInUp 0.3s ease forwards; }
+        .repo-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+        .repo-name { font-size: 1.2rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+        .repo-name-left { display: flex; align-items: center; gap: 6px; overflow: hidden; }
+        .repo-name-left i { flex-shrink: 0; color: var(--accent); }
+        .repo-name-left a { color: var(--accent); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .copy-btn { background: transparent; border: none; color: var(--text-secondary); cursor: pointer; font-size: 0.75rem; border-radius: 6px; padding: 0.2rem 0.5rem; display: inline-flex; align-items: center; gap: 4px; font-family: inherit; }
+        .copy-btn:hover { background: var(--btn-hover); color: var(--accent); }
+        .repo-desc { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.6rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .repo-meta { display: flex; align-items: center; gap: 1rem; font-size: 0.75rem; color: var(--text-secondary); flex-wrap: wrap; }
+        .devil-fork { filter: brightness(0) saturate(100%) invert(35%) sepia(98%) saturate(2500%) hue-rotate(332deg); display: inline-block; }
+        .archived-badge { background: var(--badge-archived); color: #fff; padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.65rem; display: inline-flex; align-items: center; gap: 0.2rem; }
+        .status-badge { font-size: 0.7rem; }
+        .pagination { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+        .page-btn, .page-num { background: var(--btn-bg); border: 1px solid var(--border); padding: 0.4rem 0.9rem; border-radius: 6px; cursor: pointer; font-family: inherit; }
+        .back-to-top { position: fixed; bottom: 30px; left: 30px; background: var(--accent); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transition: 0.2s; z-index: 998; }
+        .back-to-top.show { opacity: 1; visibility: visible; }
+        footer { text-align: center; margin-top: 2rem; font-size: 0.75rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+        .footer-stats { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.3rem; }
+
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .skeleton-card { background: var(--skeleton-bg); border-radius: 12px; padding: 1.2rem; animation: pulse 1.2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+        .no-results { text-align: center; padding: 3rem; }
 
         .profile-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .profile-bio {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .profile-location {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            margin-top: 0.2rem;
-        }
-
-        .profile-contacts {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .contact-icon {
-            background: var(--btn-bg);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 0.4rem 0.9rem;
-            font-size: 0.8rem;
-            text-decoration: none;
-            color: var(--text-primary);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            transition: 0.2s;
-        }
-
-        .contact-icon:hover {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-        }
-
-        .search-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .search-box {
-            flex: 2;
-            min-width: 180px;
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.6rem 1rem;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            font-family: inherit;
-        }
-
-        .filter-sort {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-sort select {
-            background: var(--btn-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.6rem 0.8rem;
-            color: var(--text-primary);
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .action-btn {
-            background: var(--btn-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.6rem 0.9rem;
-            cursor: pointer;
-            color: var(--text-primary);
-            font-size: 1rem;
-            transition: 0.2s;
-            font-family: inherit;
-        }
-
-        .info {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .repo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .repo-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.2rem;
-            transition: 0.2s;
-            animation: fadeInUp 0.3s ease forwards;
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .repo-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-2px);
-        }
-
-        .repo-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .repo-name a {
-            color: var(--accent);
-            text-decoration: none;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .copy-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: 0.2s;
-            padding: 0.3rem 0.6rem;
-            border-radius: 6px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-family: 'VT323', monospace;
-        }
-
-        .copy-btn:hover {
-            background: var(--btn-hover);
-            color: var(--accent);
-        }
-
-        .repo-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.8rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .repo-meta {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            flex-wrap: wrap;
-        }
-
-        .repo-meta .fa-star,
-        .footer-stats .fa-star {
-            color: var(--gold-star);
-            text-shadow: 0 0 2px rgba(227,179,65,0.5);
-        }
-
-        .devil-fork {
-            font-size: 0.9rem;
-            filter: brightness(0) saturate(100%) invert(35%) sepia(98%) saturate(2500%) hue-rotate(332deg) brightness(98%) contrast(105%);
-            color: #e06c75;
-            display: inline-block;
-        }
-        .repo-meta span:hover .devil-fork {
-            animation: devilSpin 0.4s ease-in-out;
-        }
-        @keyframes devilSpin {
-            0% { transform: rotate(0deg); filter: hue-rotate(0deg); }
-            100% { transform: rotate(360deg); filter: hue-rotate(20deg); }
-        }
-        
-        .repo-meta .fa-database,
-        .footer-stats .fa-database {
-            color: #58a6ff;
-            filter: drop-shadow(0 0 1px rgba(88,166,255,0.4));
-        }
-
-        .language {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .archived-badge {
-            background: var(--badge-archived);
-            color: #fff;
-            padding: 0.2rem 0.5rem;
-            border-radius: 20px;
-            font-size: 0.65rem;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .status-badge {
-            font-size: 0.75rem;
-            font-weight: bold;
-            display: inline-block;
-            align-items: center;
-        }
-
-        .skeleton-card {
-            background: var(--skeleton-bg);
-            border-radius: 12px;
-            padding: 1.2rem;
-            animation: pulse 1.2s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
-
-        .skeleton-title {
-            height: 20px;
-            width: 70%;
-            background: var(--skeleton-glow);
-            border-radius: 6px;
-            margin-bottom: 12px;
-        }
-
-        .skeleton-desc {
-            height: 14px;
-            width: 90%;
-            background: var(--skeleton-glow);
-            border-radius: 4px;
-            margin-bottom: 8px;
-        }
-
-        .skeleton-meta {
-            height: 14px;
-            width: 60%;
-            background: var(--skeleton-glow);
-            border-radius: 4px;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
-        }
-
-        .page-btn,
-        .page-num {
-            background: var(--btn-bg);
-            border: 1px solid var(--border);
-            padding: 0.4rem 0.9rem;
-            border-radius: 6px;
-            color: var(--text-primary);
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-family: inherit;
-        }
-
-        .page-btn:disabled {
-            opacity: 0.5;
-            cursor: default;
-        }
-
-        .page-num.active {
-            background: var(--accent);
-            color: #fff;
-        }
-
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            background: var(--accent);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.2s;
-            border: none;
-            font-size: 1.2rem;
-            z-index: 998;
-        }
-
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 2rem;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            border-top: 1px solid var(--border);
-            padding-top: 1rem;
-        }
-
-        .footer-stats {
-            margin-top: 0.2rem;
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .error,
-        .no-results {
-            text-align: center;
-            padding: 3rem;
-        }
-        
-        .repo-meta span i {
-            margin-right: 3px;
+            display: none;
         }
     </style>
 </head>
@@ -533,12 +230,11 @@
     <div class="profile-section" id="profileSection">
         <div class="profile-left">
             <img id="profileAvatar" class="profile-avatar" src="https://github.com/Jenderal92.png" alt="avatar">
-            <div class="profile-info">
-                <div class="profile-name">
-                    <span id="profileName">Jenderal92</span>
-                </div>
-                <div class="profile-bio" id="profileBio">Loading bio...</div>
-                <div class="profile-location" id="profileLocation"><i class="fas fa-map-marker-alt"></i> <span>Loading...</span></div>
+            <div class="profile-info">            	
+                <div class="profile-name"><span id="profileName">Loading ...</span></div>
+                <div class="profile-info-combo" id="terminalContainer"></div>
+                <div class="profile-bio" id="profileBio" style="display: none;">Loading ...</div>
+                <div class="profile-location" id="profileLocation" style="display: none;">Loading ...</div>
             </div>
         </div>
         <div class="profile-contacts">
@@ -552,21 +248,16 @@
         <input type="text" id="searchInput" class="search-box" placeholder="Search repository... 🔍">
         <div class="filter-sort">
             <select id="langFilter"><option value="all">All languages</option></select>
-            <select id="sortSelect">
-                <option value="updated">🕒 Latest</option>
-                <option value="name">📁 Name</option>
-                <option value="stars">⭐ Stars</option>
-            </select>
+            <select id="sortSelect"><option value="updated">🕒 Latest</option><option value="name">📁 Name</option><option value="stars">⭐ Stars</option></select>
         </div>
         <div class="action-buttons">
             <button id="themeToggle" class="action-btn" title="Dark/Light mode"><i class="fas fa-moon"></i></button>
             <button id="zenToggle" class="action-btn" title="Zen mode"><i class="fas fa-eye-slash"></i></button>
         </div>
     </div>
+
     <div class="info" id="repoCountInfo"></div>
-
     <div id="repoContainer" class="repo-grid"></div>
-
     <div id="paginationControls" class="pagination"></div>
 
     <footer>
@@ -578,7 +269,6 @@
         </div>
     </footer>
 </div>
-
 <button id="backToTop" class="back-to-top"><i class="fas fa-arrow-up"></i></button>
 
 <script>
@@ -587,6 +277,9 @@
     let allRepos = [], filteredRepos = [], currentPage = 1, totalPages = 1;
     let currentSort = "updated", currentLang = "all";
     let totalStarsAll = 0, totalForksAll = 0, totalSizeMB = 0;
+
+    const topicsCache = new Map();
+    let pendingTopicFetches = new Map();
 
     const repoContainer = document.getElementById("repoContainer");
     const searchInput = document.getElementById("searchInput");
@@ -602,104 +295,199 @@
     const sortSelect = document.getElementById("sortSelect");
     const backToTop = document.getElementById("backToTop");
 
-    function toggleZen() {
-        document.body.classList.toggle("zen");
-        localStorage.setItem("zenMode", document.body.classList.contains("zen") ? "true" : "false");
-    }
-    zenToggle.addEventListener("click", toggleZen);
-    if (localStorage.getItem("zenMode") === "true") document.body.classList.add("zen");
-
-    function initTheme() {
-        if (localStorage.getItem("theme") === "light") {
-            document.body.classList.add("light");
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        } else {
-            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    async function fetchWithRetry(url, retries = 3, delay = 1000) {
+        for (let i = 0; i < retries; i++) {
+            try {
+                const res = await fetch(url);
+                if (res.status === 403 && res.headers.get('X-RateLimit-Remaining') === '0') {
+                    const reset = res.headers.get('X-RateLimit-Reset');
+                    const waitTime = reset ? (parseInt(reset) * 1000 - Date.now()) : 60000;
+                    await new Promise(r => setTimeout(r, Math.max(1000, waitTime)));
+                    continue;
+                }
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return res;
+            } catch (err) {
+                if (i === retries - 1) throw err;
+                await new Promise(r => setTimeout(r, delay * (i + 1)));
+            }
         }
     }
-    function toggleTheme() {
-        if (document.body.classList.contains("light")) {
-            document.body.classList.remove("light");
-            localStorage.setItem("theme", "dark");
-            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+
+    async function fetchTopicsForRepo(owner, repoName) {
+        const fullKey = `${owner}/${repoName}`;
+        if (topicsCache.has(fullKey)) return topicsCache.get(fullKey);
+        if (pendingTopicFetches.has(fullKey)) return pendingTopicFetches.get(fullKey);
+        
+        const fetchPromise = (async () => {
+            try {
+                const url = `https://api.github.com/repos/${owner}/${repoName}/topics`;
+                const response = await fetchWithRetry(url, 2);
+                const data = await response.json();
+                const topics = data.names || [];
+                topicsCache.set(fullKey, topics);
+                return topics;
+            } catch (err) {
+                console.warn(`Failed topics for ${repoName}:`, err);
+                topicsCache.set(fullKey, []);
+                return [];
+            } finally {
+                pendingTopicFetches.delete(fullKey);
+            }
+        })();
+        pendingTopicFetches.set(fullKey, fetchPromise);
+        return fetchPromise;
+    }
+
+    async function updateCardWithTopics(cardElement, repoName, owner) {
+        const topicsDiv = cardElement.querySelector('.repo-topics');
+        if (!topicsDiv) return;
+        const fullKey = `${owner}/${repoName}`;
+        if (topicsCache.has(fullKey)) {
+            const topics = topicsCache.get(fullKey);
+            if (topics.length === 0) {
+                topicsDiv.innerHTML = '<span class="topic-loading"><i class="fas fa-tag"></i> No topics</span>';
+            } else {
+                const topicsHtml = topics.map(t => `<span class="topic-tag"><i class="fas fa-hashtag"></i> ${t}</span>`).join('');
+                topicsDiv.innerHTML = topicsHtml;
+            }
+            return;
+        }
+        topicsDiv.innerHTML = '<span class="topic-loading"><i class="fas fa-spinner fa-pulse"></i> fetching topics...</span>';
+        const topics = await fetchTopicsForRepo(owner, repoName);
+        if (topics.length === 0) {
+            topicsDiv.innerHTML = '<span class="topic-loading"><i class="fas fa-tag"></i> No topics</span>';
         } else {
-            document.body.classList.add("light");
-            localStorage.setItem("theme", "light");
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            const topicsHtml = topics.map(t => `<span class="topic-tag"><i class="fas fa-hashtag"></i> ${t}</span>`).join('');
+            topicsDiv.innerHTML = topicsHtml;
         }
     }
-    themeToggle.addEventListener("click", toggleTheme);
-    initTheme();
 
-    function showSkeletonLoader() {
-        let skeletons = "";
-        for (let i = 0; i < REPO_PER_PAGE; i++) {
-            skeletons += `
-                <div class="skeleton-card">
-                    <div class="skeleton-title"></div>
-                    <div class="skeleton-desc"></div>
-                    <div class="skeleton-desc" style="width: 80%;"></div>
-                    <div class="skeleton-meta"></div>
+    function attachTopicsToAllCards() {
+        const cards = document.querySelectorAll('.repo-card');
+        cards.forEach(card => {
+            const nameLink = card.querySelector('.repo-name-left a');
+            if (nameLink) {
+                const repoName = nameLink.textContent.trim();
+                updateCardWithTopics(card, repoName, GITHUB_USERNAME);
+            }
+        });
+    }
+
+    function getLangIcon(lang) {
+        if (!lang) return '<i class="fas fa-archive"></i>';
+        const l = lang.toLowerCase();
+        const map = {
+            'python': '<i class="fab fa-python" style="color:#3572A5;"></i>',
+            'php': '<i class="fab fa-php" style="color:#777BB4;"></i>',
+            'javascript': '<i class="fab fa-js" style="color:#f1e05a;"></i>',
+            'typescript': '<i class="fab fa-js" style="color:#3178c6;"></i>',
+            'html': '<i class="fab fa-html5" style="color:#e34c26;"></i>',
+            'css': '<i class="fab fa-css3-alt" style="color:#563d7c;"></i>',
+            'java': '<i class="fab fa-java" style="color:#b07219;"></i>',
+            'go': '<i class="fab fa-golang" style="color:#00ADD8;"></i>',
+        };
+        for (let [k, v] of Object.entries(map)) if (l.includes(k)) return v;
+        return '<i class="fas fa-code"></i>';
+    }
+
+    function formatSizeMB(sizeKB) { if (!sizeKB || isNaN(sizeKB)) return "0.00"; const mb = sizeKB / 1024; return mb.toFixed(2); }
+
+    async function handleCopy(buttonElement, urlToCopy) {
+        const originalHTML = buttonElement.innerHTML;
+        const setTempAndReset = (iconHtml, text) => {
+            buttonElement.innerHTML = `${iconHtml} ${text}`;
+            setTimeout(() => { buttonElement.innerHTML = originalHTML; }, 1500);
+        };
+        try {
+            await navigator.clipboard.writeText(urlToCopy);
+            setTempAndReset('<i class="fas fa-check-circle"></i>', 'Copied!');
+        } catch (err) {
+            let success = false;
+            const textarea = document.createElement("textarea");
+            textarea.value = urlToCopy;
+            textarea.style.position = "fixed";
+            textarea.style.top = "-9999px";
+            document.body.appendChild(textarea);
+            textarea.select();
+            try { success = document.execCommand("copy"); } catch(e) { }
+            document.body.removeChild(textarea);
+            if (success) setTempAndReset('<i class="fas fa-check-circle"></i>', 'Copied!');
+            else setTempAndReset('<i class="fas fa-exclamation-triangle"></i>', 'Failed');
+        }
+    }
+
+    function renderCurrentPage() {
+        if (!filteredRepos.length) {
+            repoContainer.innerHTML = `<div class="no-results">📭 No matching repositories.</div>`;
+            repoCountInfo.innerHTML = `0 results`;
+            footerTotal.innerText = `total 0 repos`;
+            return;
+        }
+        const start = (currentPage - 1) * REPO_PER_PAGE;
+        const end = start + REPO_PER_PAGE;
+        const pageRepos = filteredRepos.slice(start, end);
+        let html = "";
+        for (const repo of pageRepos) {
+            const sizeMB = formatSizeMB(repo.size);
+            const updatedAt = new Date(repo.updated_at);
+            const sekarang = new Date();
+            const selisihHari = Math.floor((sekarang - updatedAt) / (1000 * 60 * 60 * 24));
+            let statusWaktu = "";
+            if (selisihHari <= 14) statusWaktu = '<span class="status-badge" style="color: #56d364;"><i class="fas fa-fire"></i>Active</span>';
+            else if (selisihHari > 365) statusWaktu = '<span class="status-badge" style="color: #f85149;"><i class="fas fa-bed"></i> Inactive</span>';
+            else statusWaktu = '<span class="status-badge" style="color: #8b949e;"><i class="fas fa-folder"></i> Stable</span>';
+
+            html += `
+                <div class="repo-card">
+                    <div class="repo-name">
+                        <div class="repo-name-left">
+                            <i class="fas fa-code"></i>
+                            <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">${repo.name}</a>
+                        </div>
+                        <button class="copy-btn" data-url="${repo.html_url}" title="Copy URL"><i class="fas fa-copy"></i> <span>Copy</span></button>
+                    </div>
+                    <div class="repo-desc">${repo.description || "No description"}</div>
+                    <div class="repo-topics" data-repo="${repo.name}"><span class="topic-loading"><i class="fas fa-spinner fa-pulse"></i> loading topics...</span></div>
+                    <div class="repo-meta">
+                        <span class="language">${getLangIcon(repo.language)} ${repo.language || "Unknown"}</span>
+                        <span><i class="fas fa-star"></i> ${repo.stargazers_count}</span>
+                        <span><span class="devil-fork">🔱</span> ${repo.forks_count}</span>
+                        <span><i class="fas fa-database"></i> ${sizeMB} MB</span>
+                        ${statusWaktu}
+                        ${repo.archived ? '<span class="archived-badge"><i class="fas fa-archive"></i> Archived</span>' : ''}
+                    </div>
                 </div>
             `;
         }
-        repoContainer.innerHTML = skeletons;
+        repoContainer.innerHTML = html;
+        repoCountInfo.innerHTML = `<i class="fa-solid fa-list"></i> Showing ${start + 1}-${Math.min(end, filteredRepos.length)} of ${filteredRepos.length} repos`;
+        footerTotal.innerText = `total ${filteredRepos.length} repos (from ${allRepos.length} public)`;
+
+        document.querySelectorAll(".copy-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const url = btn.getAttribute("data-url");
+                if (url) handleCopy(btn, url);
+            });
+        });
+        attachTopicsToAllCards();
     }
 
-    async function fetchUserProfile() {
-        try {
-            const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
-            if (res.ok) {
-                const data = await res.json();
-                document.getElementById("profileAvatar").src = data.avatar_url || `https://github.com/${GITHUB_USERNAME}.png`;
-                document.getElementById("profileName").innerText = data.name || GITHUB_USERNAME;
-                document.getElementById("profileBio").innerHTML = data.bio || "No bio available";
-                document.getElementById("profileLocation").querySelector("span").innerText = data.location || "Unknown";
-            }
-        } catch(e) { }
-    }
+    function renderPagination() {
+        if (totalPages <= 1) { paginationDiv.innerHTML = ""; return; }
+        let btns = `<button class="page-btn" id="prevPage" ${currentPage === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i> Prev</button>`;
+        let start = Math.max(1, currentPage - 2), end = Math.min(totalPages, currentPage + 2);
+        if (end - start < 4) { if (start === 1) end = Math.min(totalPages, start + 4); else if (end === totalPages) start = Math.max(1, end - 4); }
+        if (start > 1) { btns += `<button class="page-num" data-page="1">1</button>`; if (start > 2) btns += `<span>...</span>`; }
+        for (let i = start; i <= end; i++) btns += `<button class="page-num ${currentPage === i ? 'active' : ''}" data-page="${i}">${i}</button>`;
+        if (end < totalPages) { if (end < totalPages - 1) btns += `<span>...</span>`; btns += `<button class="page-num" data-page="${totalPages}">${totalPages}</button>`; }
+        btns += `<button class="page-btn" id="nextPage" ${currentPage === totalPages ? 'disabled' : ''}>Next <i class="fas fa-chevron-right"></i></button>`;
+        paginationDiv.innerHTML = btns;
 
-    async function fetchAllRepos() {
-        let page = 1, all = [];
-        while (true) {
-            const url = `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100&page=${page}`;
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`No matching repositories.`);
-            const data = await res.json();
-            if (data.length === 0) break;
-            all = all.concat(data);
-            if (data.length < 100) break;
-            page++;
-        }
-        return all;
-    }
-
-    function computeTotalStats(repos) {
-        let stars = 0, forks = 0, totalSizeKB = 0;
-        for (const repo of repos) {
-            stars += Number(repo.stargazers_count) || 0;
-            forks += Number(repo.forks_count) || 0;
-            
-            const repoSize = Number(repo.size);
-            if (!isNaN(repoSize) && repoSize > 0) {
-                totalSizeKB += repoSize;
-            }
-        }
-        totalStarsAll = stars;
-        totalForksAll = forks;
-        totalSizeMB = formatSizeMB(totalSizeKB);
-        
-        totalStarsSpan.innerText = totalStarsAll;
-        totalForksSpan.innerText = totalForksAll;
-        totalSizeSpan.innerText = totalSizeMB;
-    }
-
-    function populateLangFilter(repos) {
-        const langs = new Set();
-        for (const repo of repos) if (repo.language) langs.add(repo.language);
-        const sorted = Array.from(langs).sort();
-        langFilter.innerHTML = '<option value="all">All languages</option>';
-        for (const lang of sorted) langFilter.innerHTML += `<option value="${lang}">${lang}</option>`;
+        document.getElementById("prevPage")?.addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderCurrentPage(); renderPagination(); } });
+        document.getElementById("nextPage")?.addEventListener("click", () => { if (currentPage < totalPages) { currentPage++; renderCurrentPage(); renderPagination(); } });
+        document.querySelectorAll(".page-num").forEach(btn => { btn.addEventListener("click", () => { let p = parseInt(btn.dataset.page); if (!isNaN(p) && p !== currentPage) { currentPage = p; renderCurrentPage(); renderPagination(); } }); });
     }
 
     function sortRepos(repos, sortBy) {
@@ -723,191 +511,86 @@
         renderPagination();
     }
 
-    function getLangIcon(lang) {
-        if (!lang) return '<i class="fas fa-archive"></i>';
-        const l = lang.toLowerCase();
-        const map = {
-            'python': '<i class="fab fa-python" style="color:#3572A5;"></i>',
-            'php': '<i class="fab fa-php" style="color:#777BB4;"></i>',
-            'javascript': '<i class="fab fa-js" style="color:#f1e05a;"></i>',
-            'typescript': '<i class="fab fa-js" style="color:#3178c6;"></i>',
-            'html': '<i class="fab fa-html5" style="color:#e34c26;"></i>',
-            'css': '<i class="fab fa-css3-alt" style="color:#563d7c;"></i>',
-            'java': '<i class="fab fa-java" style="color:#b07219;"></i>',
-            'go': '<i class="fab fa-golang" style="color:#00ADD8;"></i>',
-        };
-        for (let [k, v] of Object.entries(map)) if (l.includes(k)) return v;
-        return '<i class="fas fa-code"></i>';
+    function populateLangFilter(repos) {
+        const langs = new Set();
+        for (const repo of repos) if (repo.language) langs.add(repo.language);
+        const sorted = Array.from(langs).sort();
+        langFilter.innerHTML = '<option value="all">All languages</option>';
+        for (const lang of sorted) langFilter.innerHTML += `<option value="${lang}">${lang}</option>`;
     }
 
-    function formatSizeMB(sizeKB) {
-        if (!sizeKB || isNaN(sizeKB) || sizeKB < 0) {
-            return "0.00";
+    function computeTotalStats(repos) {
+        let stars = 0, forks = 0, totalSizeKB = 0;
+        for (const repo of repos) {
+            stars += repo.stargazers_count || 0;
+            forks += repo.forks_count || 0;
+            totalSizeKB += repo.size || 0;
         }
-        const mb = sizeKB / 1024;
-        if (mb > 0 && mb < 0.01) {
-            return "0.01";
-        }
-        return mb.toFixed(2);
+        totalStarsAll = stars; totalForksAll = forks; totalSizeMB = formatSizeMB(totalSizeKB);
+        totalStarsSpan.innerText = totalStarsAll; totalForksSpan.innerText = totalForksAll; totalSizeSpan.innerText = totalSizeMB;
     }
 
-    async function handleCopy(buttonElement, urlToCopy) {
-        const originalHTML = buttonElement.innerHTML;
-        const setTempAndReset = (iconHtml, text) => {
-            buttonElement.innerHTML = `${iconHtml} ${text}`;
-            setTimeout(() => {
-                buttonElement.innerHTML = originalHTML;
-            }, 1500);
-        };
-
+    async function fetchUserProfile() {
         try {
-            await navigator.clipboard.writeText(urlToCopy);
-            setTempAndReset('<i class="fas fa-check-circle"></i>', 'Copied!');
-        } catch (err) {
-            let success = false;
-            const textarea = document.createElement("textarea");
-            textarea.value = urlToCopy;
-            textarea.style.position = "fixed";
-            textarea.style.top = "-9999px";
-            textarea.style.left = "-9999px";
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                success = document.execCommand("copy");
-            } catch (e) { }
-            document.body.removeChild(textarea);
-
-            if (success) {
-                setTempAndReset('<i class="fas fa-check-circle"></i>', 'Copied!');
-            } else {
-                setTempAndReset('<i class="fas fa-exclamation-triangle"></i>', 'Failed');
-            }
-        }
-    }
-
-    function renderCurrentPage() {
-        if (!filteredRepos.length) {
-            repoContainer.innerHTML = `<div class="no-results">📭 No matching repositories.</div>`;
-            repoCountInfo.innerHTML = `0 results`;
-            footerTotal.innerText = `total 0 repos`;
-            return;
-        }
-        const start = (currentPage - 1) * REPO_PER_PAGE;
-        const end = start + REPO_PER_PAGE;
-        const pageRepos = filteredRepos.slice(start, end);
-        let html = "";
-        for (const repo of pageRepos) {
-            const sizeMB = formatSizeMB(repo.size);
-
-            const updatedAt = new Date(repo.updated_at);
-            const sekarang = new Date();
-            const selisihHari = Math.floor((sekarang - updatedAt) / (1000 * 60 * 60 * 24));
+            const res = await fetchWithRetry(`https://api.github.com/users/${GITHUB_USERNAME}`, 2);
+            const data = await res.json();
+            document.getElementById("profileAvatar").src = data.avatar_url || `https://github.com/${GITHUB_USERNAME}.png`;
             
-            let statusWaktu = "";
-            if (selisihHari <= 14) {
-                statusWaktu = '<span class="status-badge" style="color: #56d364;"><i class="fas fa-fire"></i>Active</span>';
-            } else if (selisihHari > 365) {
-                statusWaktu = '<span class="status-badge" style="color: #f85149; solid rgba(248,81,73,0.4);"><i class="fas fa-bed"></i> Long</span>';
-            } else {
-                statusWaktu = '<span class="status-badge" style="color: #8b949e; solid rgba(139,148,158,0.3);"><i class="fas fa-folder"></i> Stable</span>';
-            }
-
-            html += `
-                <div class="repo-card">
-                    <div class="repo-name">
-                        <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">${repo.name}</a>
-                        <button class="copy-btn" data-url="${repo.html_url}" title="Copy repository URL"><i class="fas fa-copy"></i> <span class="copy-text">Copy</span></button>
-                    </div>
-                    <div class="repo-desc">${repo.description || "No description"}</div>
-                    <div class="repo-meta">
-                        <span class="language">${getLangIcon(repo.language)} ${repo.language || "Unknown"}</span>
-                        <span><i class="fas fa-star"></i> ${repo.stargazers_count}</span>
-                        <span><span class="devil-fork">🔱</span> ${repo.forks_count}</span>
-                        <span><i class="fas fa-database"></i> ${sizeMB} MB</span>
-                        ${statusWaktu}
-                        ${repo.archived ? '<span class="archived-badge"><i class="fas fa-archive"></i> Archived</span>' : ''}
-                    </div>
+            const displayName = data.name || GITHUB_USERNAME;
+            const bio = data.bio || "No bio available";
+            const location = data.location || "Unknown";
+            
+            const terminalHtml = `
+                <div class="terminal-profile">
+                    <div class="terminal-line"><span class="prompt-user">┌─[${displayName}]─[~]</span></div>
+                    <div class="terminal-line"><span class="bio-text">└──╼ $ <span class="bio-text">${escapeHtml(bio)}</span></div>
+                    <div class="terminal-line"><span class="location-text">└──╼ $ 📍 ${escapeHtml(location)}</span></div>
                 </div>
             `;
-        }
-        repoContainer.innerHTML = html;
-        repoCountInfo.innerHTML = `Showing ${start + 1}-${Math.min(end, filteredRepos.length)} of ${filteredRepos.length} repos`;
-        footerTotal.innerText = `total ${filteredRepos.length} repos (from ${allRepos.length} public)`;
+            const terminalContainer = document.getElementById("terminalContainer");
+            if (terminalContainer) {
+                terminalContainer.innerHTML = terminalHtml;
+            }
+        } catch(e) { console.warn(e); }
+    }
 
-        document.querySelectorAll(".copy-btn").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                const url = btn.getAttribute("data-url");
-                if (url) {
-                    handleCopy(btn, url);
-                } else {
-                    const orig = btn.innerHTML;
-                    btn.innerHTML = '<i class="fas fa-ban"></i> Error';
-                    setTimeout(() => { btn.innerHTML = orig; }, 1200);
-                }
-            });
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
         });
     }
 
-    function renderPagination() {
-        if (totalPages <= 1) {
-            paginationDiv.innerHTML = "";
-            return;
+    async function fetchAllRepos() {
+        let page = 1, all = [];
+        while (true) {
+            const url = `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100&page=${page}`;
+            const res = await fetchWithRetry(url, 3, 1500);
+            const data = await res.json();
+            if (data.length === 0) break;
+            all = all.concat(data);
+            if (data.length < 100) break;
+            page++;
         }
-        let btns = `<button class="page-btn" id="prevPage" ${currentPage === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i> Prev</button>`;
-        let start = Math.max(1, currentPage - 2), end = Math.min(totalPages, currentPage + 2);
-        if (end - start < 4) {
-            if (start === 1) end = Math.min(totalPages, start + 4);
-            else if (end === totalPages) start = Math.max(1, end - 4);
-        }
-        if (start > 1) {
-            btns += `<button class="page-num" data-page="1">1</button>`;
-            if (start > 2) btns += `<span>...</span>`;
-        }
-        for (let i = start; i <= end; i++) btns += `<button class="page-num ${currentPage === i ? 'active' : ''}" data-page="${i}">${i}</button>`;
-        if (end < totalPages) {
-            if (end < totalPages - 1) btns += `<span>...</span>`;
-            btns += `<button class="page-num" data-page="${totalPages}">${totalPages}</button>`;
-        }
-        btns += `<button class="page-btn" id="nextPage" ${currentPage === totalPages ? 'disabled' : ''}>Next <i class="fas fa-chevron-right"></i></button>`;
-        paginationDiv.innerHTML = btns;
-
-        document.getElementById("prevPage")?.addEventListener("click", () => {
-            if (currentPage > 1) {
-                currentPage--;
-                renderCurrentPage();
-                renderPagination();
-            }
-        });
-        document.getElementById("nextPage")?.addEventListener("click", () => {
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderCurrentPage();
-                renderPagination();
-            }
-        });
-        document.querySelectorAll(".page-num").forEach(btn => {
-            btn.addEventListener("click", () => {
-                let p = parseInt(btn.dataset.page);
-                if (!isNaN(p) && p !== currentPage) {
-                    currentPage = p;
-                    renderCurrentPage();
-                    renderPagination();
-                }
-            });
-        });
+        return all;
     }
 
-    window.addEventListener("scroll", () => {
-        if (window.scrollY > 300) backToTop.classList.add("show");
-        else backToTop.classList.remove("show");
-    });
+    function showSkeletonLoader() {
+        let skeletons = "";
+        for (let i = 0; i < REPO_PER_PAGE; i++) skeletons += `<div class="skeleton-card"><div class="skeleton-title"></div><div class="skeleton-desc"></div><div class="skeleton-desc" style="width:80%;"></div><div class="skeleton-meta"></div></div>`;
+        repoContainer.innerHTML = skeletons;
+    }
+
+    window.addEventListener("scroll", () => { if (window.scrollY > 300) backToTop.classList.add("show"); else backToTop.classList.remove("show"); });
     backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
     async function init() {
         showSkeletonLoader();
         try {
-            const [repos] = await Promise.all([fetchAllRepos(), fetchUserProfile()]);
+            const repos = await fetchAllRepos();
+            await fetchUserProfile();
             allRepos = repos.filter(r => !r.fork);
             allRepos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
             computeTotalStats(allRepos);
@@ -918,21 +601,28 @@
             renderCurrentPage();
             renderPagination();
         } catch (err) {
-            repoContainer.innerHTML = `<div class="error">❌ ${err.message}</div>`;
+            repoContainer.innerHTML = `<div class="error">❌ Failed to load repositories: ${err.message}. Please refresh or try again later.</div>`;
         }
     }
 
     searchInput.addEventListener("input", applyFilterAndSort);
-    langFilter.addEventListener("change", (e) => {
-        currentLang = e.target.value;
-        applyFilterAndSort();
-    });
-    sortSelect.addEventListener("change", (e) => {
-        currentSort = e.target.value;
-        applyFilterAndSort();
-    });
+    langFilter.addEventListener("change", (e) => { currentLang = e.target.value; applyFilterAndSort(); });
+    sortSelect.addEventListener("change", (e) => { currentSort = e.target.value; applyFilterAndSort(); });
     document.getElementById("currentYear").innerText = new Date().getFullYear();
 
+    function initTheme() {
+        if (localStorage.getItem("theme") === "light") { document.body.classList.add("light"); themeToggle.innerHTML = '<i class="fas fa-sun"></i>'; } 
+        else { themeToggle.innerHTML = '<i class="fas fa-moon"></i>'; }
+    }
+    function toggleTheme() {
+        if (document.body.classList.contains("light")) { document.body.classList.remove("light"); localStorage.setItem("theme", "dark"); themeToggle.innerHTML = '<i class="fas fa-moon"></i>'; } 
+        else { document.body.classList.add("light"); localStorage.setItem("theme", "light"); themeToggle.innerHTML = '<i class="fas fa-sun"></i>'; }
+    }
+    themeToggle.addEventListener("click", toggleTheme);
+    initTheme();
+    if (localStorage.getItem("zenMode") === "true") document.body.classList.add("zen");
+    zenToggle.addEventListener("click", () => { document.body.classList.toggle("zen"); localStorage.setItem("zenMode", document.body.classList.contains("zen") ? "true" : "false"); });
+    
     init();
 </script>
 </body>
