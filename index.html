@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Jenderal92 • GitHub Archive</title>
+    <title>Jenderal92 • GitHub Archive — Devil's Fork</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Luckiest+Guy&family=VT323&display=swap" rel="stylesheet">
-    
     <style>
         * {
             margin: 0;
@@ -31,8 +30,8 @@
             --skeleton-bg: #21262d;
             --skeleton-glow: #30363d;
             --badge-archived: #d29922;
-            --toast-success: #2ea043;
-            --toast-error: #f85149;
+            --gold-star: #e3b341;
+            --devil-trident: #e06c75;
         }
 
         body.light {
@@ -52,6 +51,8 @@
             --skeleton-bg: #eaeef2;
             --skeleton-glow: #d0d7de;
             --badge-archived: #b8860b;
+            --gold-star: #d4af37;
+            --devil-trident: #b93b4d;
         }
 
         html {
@@ -351,6 +352,32 @@
             flex-wrap: wrap;
         }
 
+        .repo-meta .fa-star,
+        .footer-stats .fa-star {
+            color: var(--gold-star);
+            text-shadow: 0 0 2px rgba(227,179,65,0.5);
+        }
+
+        .devil-fork {
+            font-size: 0.9rem;
+            filter: brightness(0) saturate(100%) invert(35%) sepia(98%) saturate(2500%) hue-rotate(332deg) brightness(98%) contrast(105%);
+            color: #e06c75;
+            display: inline-block;
+        }
+        .repo-meta span:hover .devil-fork {
+        	animation: devilSpin 0.4s ease-in-out;
+        }
+        @keyframes devilSpin {
+        	0% { transform: rotate(0deg); filter: hue-rotate(0deg); }
+        	100% { transform: rotate(360deg); filter: hue-rotate(20deg); }
+        }
+        
+        .repo-meta .fa-database,
+        .footer-stats .fa-database {
+        	color: #58a6ff;  /
+            filter: drop-shadow(0 0 1px rgba(88,166,255,0.4));
+        }
+
         .language {
             display: inline-flex;
             align-items: center;
@@ -480,7 +507,8 @@
             margin-top: 0.2rem;
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            gap: 1.5rem;
+            flex-wrap: wrap;
         }
 
         .error,
@@ -488,13 +516,24 @@
             text-align: center;
             padding: 3rem;
         }
+        
+        .repo-meta span i {
+            margin-right: 3px;
+        }
+        
+        .size-badge {
+            background: rgba(128,128,128,0.15);
+            padding: 0.1rem 0.4rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="site-header">
         <h1><i class="fas fa-code-branch"></i> Jenderal92 / repositories</h1>
-        <div class="sub">"Cogo, Cogito, Cognosco"</div>
+        <div class="sub"><i class="fas fa-crown"></i> "Cogo, Cogito, Cognosco"</div>
     </div>
 
     <div class="profile-section" id="profileSection">
@@ -539,8 +578,9 @@
     <footer>
         <div><i class="fab fa-github"></i> Data from GitHub API • <span id="footerTotal"></span> • © <span id="currentYear"></span> Jenderal92</div>
         <div class="footer-stats" id="footerStats">
-            <span><i class="fa-regular fa-star"></i> Total stars: <span id="totalStarsAll">-</span></span>
-            <span><i class="fas fa-code-branch"></i> Total forks: <span id="totalForksAll">-</span></span>
+            <span><i class="fas fa-star"></i> Total stars: <span id="totalStarsAll">-</span></span>
+            <span><span class="devil-fork">🔱</span> Total forks: <span id="totalForksAll">-</span></span>
+            <span><i class="fas fa-database"></i> Total size: <span id="totalSizeAll">-</span> MB</span>
         </div>
     </footer>
 </div>
@@ -552,7 +592,7 @@
     const REPO_PER_PAGE = 9;
     let allRepos = [], filteredRepos = [], currentPage = 1, totalPages = 1;
     let currentSort = "updated", currentLang = "all";
-    let totalStarsAll = 0, totalForksAll = 0;
+    let totalStarsAll = 0, totalForksAll = 0, totalSizeMB = 0;
 
     const repoContainer = document.getElementById("repoContainer");
     const searchInput = document.getElementById("searchInput");
@@ -561,6 +601,7 @@
     const footerTotal = document.getElementById("footerTotal");
     const totalStarsSpan = document.getElementById("totalStarsAll");
     const totalForksSpan = document.getElementById("totalForksAll");
+    const totalSizeSpan = document.getElementById("totalSizeAll");
     const themeToggle = document.getElementById("themeToggle");
     const zenToggle = document.getElementById("zenToggle");
     const langFilter = document.getElementById("langFilter");
@@ -640,15 +681,18 @@
     }
 
     function computeTotalStats(repos) {
-        let stars = 0, forks = 0;
+        let stars = 0, forks = 0, totalSizeKB = 0;
         for (const repo of repos) {
             stars += repo.stargazers_count;
             forks += repo.forks_count;
+            totalSizeKB += repo.size || 0;
         }
         totalStarsAll = stars;
         totalForksAll = forks;
+        totalSizeMB = (totalSizeKB / 1024).toFixed(2);
         totalStarsSpan.innerText = totalStarsAll;
         totalForksSpan.innerText = totalForksAll;
+        totalSizeSpan.innerText = totalSizeMB;
     }
 
     function populateLangFilter(repos) {
@@ -697,9 +741,15 @@
         return '<i class="fas fa-code"></i>';
     }
 
+    function formatSizeMB(sizeKB) {
+        if (!sizeKB && sizeKB !== 0) return "0";
+        const mb = sizeKB / 1024;
+        return mb.toFixed(2);
+    }
+
     async function handleCopy(buttonElement, urlToCopy) {
         const originalHTML = buttonElement.innerHTML;
-        const setTempAndReset = (iconHtml, text, isError = false) => {
+        const setTempAndReset = (iconHtml, text) => {
             buttonElement.innerHTML = `${iconHtml} ${text}`;
             setTimeout(() => {
                 buttonElement.innerHTML = originalHTML;
@@ -726,7 +776,7 @@
             if (success) {
                 setTempAndReset('<i class="fas fa-check-circle"></i>', 'Copied!');
             } else {
-                setTempAndReset('<i class="fas fa-exclamation-triangle"></i>', 'Failed', true);
+                setTempAndReset('<i class="fas fa-exclamation-triangle"></i>', 'Failed');
             }
         }
     }
@@ -743,6 +793,7 @@
         const pageRepos = filteredRepos.slice(start, end);
         let html = "";
         for (const repo of pageRepos) {
+            const sizeMB = formatSizeMB(repo.size);
             html += `
                 <div class="repo-card">
                     <div class="repo-name">
@@ -752,8 +803,9 @@
                     <div class="repo-desc">${repo.description || "No description"}</div>
                     <div class="repo-meta">
                         <span class="language">${getLangIcon(repo.language)} ${repo.language || "Unknown"}</span>
-                        <span><i class="fa-regular fa-star"></i> ${repo.stargazers_count}</span>
-                        <span><i class="fas fa-code-branch"></i> ${repo.forks_count}</span>
+                        <span><i class="fas fa-star"></i> ${repo.stargazers_count}</span>
+                        <span><span class="devil-fork">🔱</span> ${repo.forks_count}</span>
+                        <span><i class="fas fa-database"></i> ${sizeMB} MB</span>
                         ${repo.archived ? '<span class="archived-badge"><i class="fas fa-archive"></i> Archived</span>' : ''}
                     </div>
                 </div>
@@ -866,4 +918,3 @@
 </script>
 </body>
 </html>
-
