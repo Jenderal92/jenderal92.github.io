@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | Jenderal92</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0c0f;
+            font-family: 'Fira Code', 'Courier New', 'JetBrains Mono', monospace;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            color: #c3e88d;
+        }
+
+        .terminal {
+            max-width: 880px;
+            width: 100%;
+            background: #0f1117;
+            border-radius: 1.2rem;
+            border: 1px solid #2a2f3f;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.8);
+            overflow: hidden;
+            backdrop-filter: blur(2px);
+        }
+
+        .term-bar {
+            background: #1a1d24;
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border-bottom: 1px solid #2a2f3f;
+        }
+        .term-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff5f56;
+        }
+        .term-dot:nth-child(2) { background: #ffbd2e; }
+        .term-dot:nth-child(3) { background: #27c93f; }
+        .term-title {
+            margin-left: 0.5rem;
+            font-size: 0.8rem;
+            color: #7e8a98;
+            letter-spacing: 0.5px;
+        }
+        .term-title span {
+            color: #c3e88d;
+        }
+        .term-content {
+            padding: 2rem 1.8rem;
+        }
+        .line {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+        .prompt {
+            color: #89ddff;
+            font-weight: 600;
+        }
+        .prompt-sign {
+            color: #ffcb6b;
+        }
+        .cmd {
+            color: #c3e88d;
+        }
+        .error-code {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #ff5370;
+            text-shadow: 0 0 8px rgba(255,83,112,0.3);
+            margin: 0.5rem 0 0.2rem;
+            letter-spacing: -2px;
+        }
+        .error-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #f78c6c;
+            margin-bottom: 1rem;
+        }
+        .path-block {
+            background: #07090e;
+            border-left: 4px solid #ffcb6b;
+            padding: 1rem 1.2rem;
+            margin: 1.5rem 0;
+            border-radius: 0.8rem;
+            font-family: monospace;
+        }
+        .path-label {
+            color: #89ddff;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.6rem;
+        }
+        .path-value {
+            color: #ffcb6b;
+            word-break: break-all;
+            font-size: 0.9rem;
+            background: #00000055;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            display: inline-block;
+        }
+        .button-cli {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1e2432;
+            border: 1px solid #3a4050;
+            padding: 0.6rem 1.4rem;
+            border-radius: 2rem;
+            color: #c3e88d;
+            text-decoration: none;
+            font-family: monospace;
+            font-size: 0.85rem;
+            transition: 0.2s;
+            margin-right: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .button-cli:hover {
+            background: #2a3142;
+            border-color: #ffcb6b;
+            color: #ffcb6b;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            margin-top: 2rem;
+            border-top: 1px dashed #2a2f3f;
+            padding-top: 1.2rem;
+            font-size: 0.7rem;
+            color: #607080;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .blinking-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2rem;
+            background-color: #c3e88d;
+            vertical-align: middle;
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @media (max-width: 550px) {
+            .term-content { padding: 1.2rem; }
+            .error-code { font-size: 2.5rem; }
+            .error-name { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="terminal">
+    <div class="term-bar">
+        <div class="term-dot"></div>
+        <div class="term-dot"></div>
+        <div class="term-dot"></div>
+        <div class="term-title">jenderal92@404:~<span> — zsh</span></div>
+    </div>
+    <div class="term-content">
+        <div class="line">
+            <span class="prompt">┌─[<span class="prompt-sign">jenderal92@404</span>]</span>
+            <span class="cmd">~</span>
+        </div>
+        <div class="line">
+            <span class="prompt">└─[<span class="prompt-sign">$</span>]</span>
+            <span class="cmd">curl -I <span id="show-path-cli" style="color:#ffcb6b;">/unknown</span></span>
+            <span class="blinking-cursor"></span>
+        </div>
+
+        <div class="error-code">HTTP/1.1 404 Not Found</div>
+        <div class="error-name">✨ PAGE_NOT_FOUND ✨</div>
+
+        <div class="path-block">
+            <div class="path-label">📍 REQUESTED RESOURCE</div>
+            <div class="path-value" id="dynamic-path">/resource/not/found</div>
+        </div>
+
+        <div style="margin: 1rem 0 0.5rem;">
+            <a href="/" class="button-cli">🏠 cd ~/home</a>
+            <a href="#" id="suggest-link" class="button-cli">🔍 suggest --fix</a>
+        </div>
+
+        <div class="footer">
+            <span>404 Not Found ....</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const wrongPath = window.location.pathname + window.location.search + window.location.hash;
+    const finalPath = wrongPath || '/';
+    
+    const pathSpan = document.getElementById('dynamic-path');
+    const cliPathSpan = document.getElementById('show-path-cli');
+    if (pathSpan) pathSpan.textContent = finalPath;
+    if (cliPathSpan) cliPathSpan.textContent = finalPath;
+    
+    const suggestBtn = document.getElementById('suggest-link');
+    if (suggestBtn) {
+        suggestBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('💡 Suggestion: Path "' + finalPath + '" does not exist. Please check the spelling or return to home.');
+        });
+    }
+    
+    console.log('[404] Path error: ' + finalPath);
+</script>
+</body>
+</html>
