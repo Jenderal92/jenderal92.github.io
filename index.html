@@ -291,6 +291,9 @@
     let currentSort = "updated", currentLang = "all";
     let totalStarsAll = 0, totalForksAll = 0, totalSizeMB = 0, totalViewsAll = 0;
 
+    // --- NEW: store real views from views.json ---
+    let accurateViewsMap = new Map();
+
     const topicsCache = new Map();
     let pendingTopicFetches = new Map();
 
@@ -309,6 +312,7 @@
     const sortSelect = document.getElementById("sortSelect");
     const backToTop = document.getElementById("backToTop");
 
+    // Original estimate function (unchanged)
     function computeRepoViews(repo) {
         let views = (repo.stargazers_count || 0) * 10 + (repo.forks_count || 0) * 7;
         if (repo.size) views += Math.floor(repo.size / 6);
@@ -318,6 +322,31 @@
 
     function formatViewsNumber(views) {
         return views.toLocaleString();
+    }
+
+    async function loadAccurateViews() {
+        try {
+            const res = await fetch('views.json?v=' + Date.now());
+            if (!res.ok) throw new Error();
+            const data = await res.json();
+            if (data && typeof data === 'object') {
+                accurateViewsMap.clear();
+                for (const [name, views] of Object.entries(data)) {
+                    accurateViewsMap.set(name, views);
+                }
+                console.log(`Accurate views loaded for ${accurateViewsMap.size} repos`);
+            }
+        } catch (e) {
+            console.warn('views.json not available, using estimates');
+        }
+    }
+
+    function getRepoViewCount(repo) {
+        const real = accurateViewsMap.get(repo.name);
+        if (real !== undefined && real !== null) {
+            return real;
+        }
+        return computeRepoViews(repo);
     }
 
     async function fetchWithRetry(url, retries = 3, delay = 1000) {
@@ -463,7 +492,7 @@
             else if (selisihHari > 365) statusWaktu = '<span class="status-badge" style="color: #f85149;"><i class="fas fa-bed"></i> Inactive</span>';
             else statusWaktu = '<span class="status-badge" style="color: #8b949e;"><i class="fas fa-folder"></i> Stable</span>';
             
-            const repoViewsRaw = computeRepoViews(repo);
+            const repoViewsRaw = getRepoViewCount(repo);
             const formattedViews = formatViewsNumber(repoViewsRaw);
             
             html += `
@@ -482,7 +511,7 @@
                         <span><i class="fas fa-star"></i> ${repo.stargazers_count}</span>
                         <span><span class="devil-fork">🔱</span> ${repo.forks_count}</span>
                         <span><i class="fas fa-database"></i> ${sizeMB} MB</span>
-                        <span><i class="fas fa-eye"></i> ${formattedViews} views</span>
+                        <span><i class="fas fa-chart-line"></li></i> ${formattedViews} views</span>
                         ${statusWaktu}
                         ${repo.archived ? '<span class="archived-badge"><i class="fas fa-archive"></i> Archived</span>' : ''}
                     </div>
@@ -554,7 +583,7 @@
             stars += repo.stargazers_count || 0;
             forks += repo.forks_count || 0;
             totalSizeKB += repo.size || 0;
-            viewsSum += computeRepoViews(repo);
+            viewsSum += getRepoViewCount(repo);
         }
         totalStarsAll = stars; totalForksAll = forks; totalSizeMB = formatSizeMB(totalSizeKB); totalViewsAll = viewsSum;
         totalStarsSpan.innerText = totalStarsAll;
@@ -622,6 +651,7 @@
             await fetchUserProfile();
             allRepos = repos.filter(r => !r.fork);
             allRepos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+            await loadAccurateViews(); 
             computeTotalStats(allRepos);
             populateLangFilter(allRepos);
             filteredRepos = [...allRepos];
