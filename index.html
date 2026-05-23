@@ -291,6 +291,7 @@
     let currentSort = "updated", currentLang = "all";
     let totalStarsAll = 0, totalForksAll = 0, totalSizeMB = 0, totalViewsAll = 0;
 
+    // --- NEW: store real views from views.json ---
     let accurateViewsMap = new Map();
 
     const topicsCache = new Map();
@@ -311,7 +312,7 @@
     const sortSelect = document.getElementById("sortSelect");
     const backToTop = document.getElementById("backToTop");
 
-    
+    // Original estimate function (unchanged)
     function computeRepoViews(repo) {
         let views = (repo.stargazers_count || 0) * 10 + (repo.forks_count || 0) * 7;
         if (repo.size) views += Math.floor(repo.size / 6);
