@@ -1,0 +1,75 @@
+name: Update Accurate Views
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  fetch-views:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch traffic views from GitHub API
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          cat > fetch-views.js << 'EOF'
+          const fs = require('fs');
+          const username = 'Jenderal92';
+          const token = process.env.GH_TOKEN;
+          
+          async function fetchAllRepos() {
+            let page = 1, repos = [];
+            while (true) {
+              const url = `https://api.github.com/users/${username}/repos?per_page=100&page=${page}&sort=updated`;
+              const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+              const data = await res.json();
+              if (!data.length) break;
+              repos.push(...data.filter(r => !r.fork));
+              if (data.length < 100) break;
+              page++;
+            }
+            return repos;
+          }
+          
+          async function getRepoViews(repoFullName) {
+            const url = `https://api.github.com/repos/${repoFullName}/traffic/views`;
+            try {
+              const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+              if (!res.ok) return 0;
+              const data = await res.json();
+              return data.count || 0;
+            } catch { return 0; }
+          }
+          
+          async function main() {
+            const repos = await fetchAllRepos();
+            const viewsMap = {};
+            for (const repo of repos) {
+              const views = await getRepoViews(`${username}/${repo.name}`);
+              viewsMap[repo.name] = views;
+              console.log(`${repo.name}: ${views} views`);
+              await new Promise(r => setTimeout(r, 200));
+            }
+            fs.writeFileSync('views.json', JSON.stringify(viewsMap, null, 2));
+            console.log('views.json updated');
+          }
+          main().catch(console.error);
+          EOF
+          node fetch-views.js
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add views.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update accurate views [skip ci]"
+          git push
