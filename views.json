@@ -1,7 +1,8 @@
 {
   "ijomrotok": 72,
-  "jenderal92.github.io": 140,
+  "CVE-2026-8732": 104,
   "PoC-AutoSync": 189,
+  "jenderal92.github.io": 140,
   "zip_bomb": 3,
   "Zimbra-Valid-Login-Checker": 29,
   "Youtube-MP3-Downloader": 0,
@@ -110,7 +111,6 @@
   "data-cleaning-tools": 2,
   "DA-PA-BACKLINK-CHECKER": 10,
   "cyber-auto-reff": 1,
-  "CVE-2026-8732": 104,
   "CVE-2026-8181": 304,
   "CVE-2026-5118": 383,
   "CVE-2026-4885": 263,
