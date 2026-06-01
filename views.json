@@ -1,5 +1,6 @@
 {
   "ijomrotok": 79,
+  "CVE-2025-55182-React2shell": 95,
   "PoC-AutoSync": 207,
   "jenderal92.github.io": 140,
   "FOFA-API-Threaded-Searcher": 0,
@@ -116,7 +117,6 @@
   "CVE-2026-5118": 392,
   "CVE-2026-4885": 291,
   "CVE-2026-41940": 187,
-  "CVE-2025-55182-React2shell": 95,
   "CVE-2024-9290": 23,
   "CVE-2024-8856": 16,
   "CVE-2024-6624": 24,
