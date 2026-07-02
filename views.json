@@ -1,4 +1,5 @@
 {
+  "Zimbra-Valid-Login-Checker": 14,
   "ijomrotok": 35,
   "PoC-AutoSync": 257,
   "jenderal92.github.io": 9,
@@ -14,7 +15,6 @@
   "CVE-2025-55182-React2shell": 27,
   "FOFA-API-Threaded-Searcher": 17,
   "zip_bomb": 4,
-  "Zimbra-Valid-Login-Checker": 14,
   "Youtube-MP3-Downloader": 0,
   "Youtube-Keyword-Extractor": 21,
   "Wp_Adning_Advertising_Shell_Upload": 5,
@@ -132,7 +132,7 @@
   "Cookie-Edit": 9,
   "CMS_Detector": 0,
   "Clickjacking-Exploit-Detector": 14,
-  "Cgi-Exploit-Jp-Shell-Upload": 3,
+  "Cgi-Exploit-Jp-Shell-Upload": 0,
   "Calendar-Reminder-Sender": 1,
   "Calendar-Backup-Tool": 0,
   "Blog-Gan": 1,
