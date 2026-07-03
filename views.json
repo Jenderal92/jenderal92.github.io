@@ -1,8 +1,8 @@
 {
-  "Zimbra-Valid-Login-Checker": 14,
   "ijomrotok": 35,
   "PoC-AutoSync": 257,
   "jenderal92.github.io": 9,
+  "Zimbra-Valid-Login-Checker": 14,
   "Jenderal92": 24,
   "laravel-filemanager-unrestricted-upload": 192,
   "Sticker-Maker": 17,
@@ -132,7 +132,7 @@
   "Cookie-Edit": 9,
   "CMS_Detector": 0,
   "Clickjacking-Exploit-Detector": 14,
-  "Cgi-Exploit-Jp-Shell-Upload": 0,
+  "Cgi-Exploit-Jp-Shell-Upload": 3,
   "Calendar-Reminder-Sender": 1,
   "Calendar-Backup-Tool": 0,
   "Blog-Gan": 1,
