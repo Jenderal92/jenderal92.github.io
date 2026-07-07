@@ -1,8 +1,9 @@
 {
   "ijomrotok": 40,
-  "CVE-2026-48908": 0,
   "PoC-AutoSync": 230,
+  "CVE-2025-55182-React2shell": 29,
   "jenderal92.github.io": 4,
+  "CVE-2026-48908": 0,
   "Zimbra-Valid-Login-Checker": 10,
   "Jenderal92": 12,
   "laravel-filemanager-unrestricted-upload": 246,
@@ -13,7 +14,6 @@
   "magento-upload-auto-submit-zoneh": 58,
   "GSC-Automation-Tools": 0,
   "CVE-2026-41940": 78,
-  "CVE-2025-55182-React2shell": 29,
   "FOFA-API-Threaded-Searcher": 13,
   "zip_bomb": 8,
   "Youtube-MP3-Downloader": 0,
