@@ -1,7 +1,8 @@
 {
+  "CVE-2026-48908": 0,
   "ijomrotok": 41,
-  "jenderal92.github.io": 4,
   "PoC-AutoSync": 237,
+  "jenderal92.github.io": 4,
   "Zimbra-Valid-Login-Checker": 11,
   "Jenderal92": 13,
   "laravel-filemanager-unrestricted-upload": 240,
