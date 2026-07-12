@@ -1,4 +1,5 @@
 {
+  "CVE-2026-8732": 89,
   "ijomrotok": 66,
   "PoC-AutoSync": 230,
   "jenderal92.github.io": 10,
@@ -11,7 +12,6 @@
   "Jenderal92": 15,
   "Sticker-Maker": 13,
   "php": 63,
-  "CVE-2026-8732": 89,
   "magento-upload-auto-submit-zoneh": 61,
   "GSC-Automation-Tools": 1,
   "CVE-2026-41940": 102,
