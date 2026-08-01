@@ -1,5 +1,6 @@
 {
   "ijomrotok": 25,
+  "Clickjacking-Exploit-Detector": 8,
   "PoC-AutoSync": 92,
   "jenderal92.github.io": 6,
   "CVE-2026-48908": 255,
@@ -133,7 +134,6 @@
   "Core-Web-Vitals-Monitor": 0,
   "Cookie-Edit": 1,
   "CMS_Detector": 1,
-  "Clickjacking-Exploit-Detector": 8,
   "Cgi-Exploit-Jp-Shell-Upload": 0,
   "Calendar-Reminder-Sender": 0,
   "Calendar-Backup-Tool": 3,
