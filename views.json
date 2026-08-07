@@ -1,6 +1,7 @@
 {
-  "ijomrotok": 32,
+  "vortex-dl": 0,
   "PoC-AutoSync": 100,
+  "ijomrotok": 32,
   "jenderal92.github.io": 6,
   "CVE-2026-49049": 389,
   "Clickjacking-Exploit-Detector": 6,
@@ -30,7 +31,6 @@
   "WP-CVE-2023-2732": 4,
   "Wordpress-Default-Password": 0,
   "Website-screenshot": 0,
-  "vortex-dl": 0,
   "Video-Facebook-Downloader": 1,
   "url-shortener-python": 2,
   "Tools-Scanner-Shell": 7,
