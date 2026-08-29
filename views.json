@@ -9,7 +9,7 @@
   "CVE-2026-8206": 47,
   "CVE-2026-48908": 122,
   "laravel-filemanager-unrestricted-upload": 27,
-  "reverse-ip-new-api": 21,
+  "reverse-ip-new-api": 0,
   "vortex-dl": 4,
   "Clickjacking-Exploit-Detector": 4,
   "CVE-2025-55182-React2shell": 28,
