@@ -1,12 +1,12 @@
 {
-  "PoC-AutoSync": 247,
   "ijomrotok": 34,
   "jenderal92.github.io": 14,
+  "PoC-AutoSync": 247,
   "netease-wwm-account-checker": 6,
   "Joomla-CVE-2023-23752": 2,
   "WP-CVE-2023-32243": 18,
   "CVE-2026-49049": 139,
-  "WP-CVE-2023-28121": 30,
+  "WP-CVE-2023-28121": 31,
   "CVE-2026-56290": 131,
   "CVE-2026-8732": 46,
   "CVE-2026-8206": 49,
@@ -151,5 +151,5 @@
   "BPM-Airdrop-Sol": 0,
   "Alternative_Execute_Disable_Function": 2,
   "SSTI-Exploit-Detector": 2,
-  "seo-toolkit": 4
+  "seo-toolkit": 3
 }
