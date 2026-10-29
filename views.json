@@ -1,6 +1,7 @@
 {
-  "PoC-AutoSync": 63,
   "ijomrotok": 5,
+  "PoC-AutoSync": 63,
+  "CVE-2026-5118": 7,
   "jenderal92.github.io": 0,
   "CVE-2026-41940": 7,
   "netease-wwm-account-checker": 7,
@@ -121,7 +122,6 @@
   "DA-PA-BACKLINK-CHECKER": 1,
   "cyber-auto-reff": 0,
   "CVE-2026-8181": 8,
-  "CVE-2026-5118": 7,
   "CVE-2026-4885": 2,
   "CVE-2024-9290": 4,
   "CVE-2024-8856": 7,
