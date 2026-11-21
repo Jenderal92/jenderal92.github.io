@@ -1,4 +1,5 @@
 {
+  "CVE-2025-55182-React2shell": 9,
   "metapwn-mass": 200,
   "zip_bomb": 31,
   "jenderal92.github.io": 13,
@@ -20,7 +21,6 @@
   "reverse-ip-new-api": 8,
   "vortex-dl": 1,
   "Clickjacking-Exploit-Detector": 2,
-  "CVE-2025-55182-React2shell": 9,
   "Jenderal92": 1,
   "Zimbra-Valid-Login-Checker": 4,
   "Sticker-Maker": 19,
